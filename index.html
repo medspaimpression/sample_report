@@ -1,1577 +1,1669 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Competitive Reputation Audit — Sample Report</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --ink: #1a1a1a;
-    --ink-light: #4a4a4a;
-    --ink-muted: #888;
-    --cream: #faf8f5;
-    --white: #ffffff;
-    --accent: #c8956c;
-    --accent-light: #f5ede5;
-    --accent-dark: #9e6b42;
-    --teal: #2d6a6a;
-    --teal-light: #e8f2f2;
-    --border: #e8e4df;
-    --green: #2e7d52;
-    --green-light: #edf7f1;
-    --red: #c0392b;
-    --red-light: #fdf0ef;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--ink);
-    color: var(--ink);
-    font-size: 15px;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-
-  /* ── COVER ── */
-  .cover {
-    background: var(--ink);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 48px 24px 36px;
-  }
-
-  .cover-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .cover-brand {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: var(--accent);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-  }
-
-  .cover-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: #444;
-    letter-spacing: 0.1em;
-    border: 1px solid #333;
-    padding: 3px 8px;
-  }
-
-  .cover-body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 48px 0 32px;
-  }
-
-  .cover-eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: var(--accent);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-
-  .cover-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 42px;
-    font-weight: 700;
-    color: var(--white);
-    line-height: 1.05;
-    margin-bottom: 24px;
-  }
-
-  .cover-title em {
-    font-style: italic;
-    color: var(--accent);
-  }
-
-  .cover-rule {
-    width: 48px;
-    height: 2px;
-    background: var(--accent);
-    margin-bottom: 20px;
-    opacity: 0.6;
-  }
-
-  .cover-sub {
-    font-size: 14px;
-    color: #888;
-    line-height: 1.65;
-    max-width: 280px;
-  }
-
-  .cover-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: #2a2a2a;
-    border: 1px solid #2a2a2a;
-    margin-top: 40px;
-  }
-
-  .cover-stat {
-    background: var(--ink);
-    padding: 16px;
-  }
-
-  .cover-stat-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--accent);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .cover-stat-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    color: #555;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    line-height: 1.4;
-  }
-
-  .cover-bottom {
-    border-top: 1px solid #222;
-    padding-top: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .cover-client-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 14px;
-    color: var(--white);
-    font-weight: 600;
-  }
-
-  .cover-client-sub {
-    font-size: 10px;
-    color: #555;
-    margin-top: 2px;
-  }
-
-  .cover-scroll {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: #444;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  /* ── NAV ── */
-  .section-nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(26,26,26,0.97);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid #222;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  .section-nav::-webkit-scrollbar { display: none; }
-
-  .nav-inner {
-    display: flex;
-    gap: 0;
-    min-width: max-content;
-    padding: 0 16px;
-  }
-
-  .nav-link {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: #555;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 14px 14px;
-    white-space: nowrap;
-    border-bottom: 2px solid transparent;
-    transition: color 0.2s, border-color 0.2s;
-  }
-
-  .nav-link:hover, .nav-link.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
-
-  /* ── SECTIONS ── */
-  .section {
-    background: var(--cream);
-    padding: 40px 20px;
-    border-bottom: 4px solid var(--ink);
-    scroll-margin-top: 48px;
-  }
-
-  .section.dark {
-    background: var(--ink);
-  }
-
-  .section-eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: var(--accent);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-
-  .section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--ink);
-    line-height: 1.15;
-    margin-bottom: 20px;
-  }
-
-  .section.dark .section-title { color: var(--white); }
-
-  .section-rule {
-    width: 32px;
-    height: 2px;
-    background: var(--accent);
-    margin-bottom: 20px;
-  }
-
-  p {
-    font-size: 14px;
-    color: var(--ink-light);
-    line-height: 1.65;
-    margin-bottom: 12px;
-  }
-
-  .section.dark p { color: #888; }
-
-  /* ── HEADLINE BOX ── */
-  .headline-box {
-    background: var(--ink);
-    padding: 20px;
-    margin-bottom: 24px;
-    border-left: 3px solid var(--accent);
-  }
-
-  .headline-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    color: var(--accent);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-
-  .headline-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 15px;
-    color: var(--white);
-    line-height: 1.6;
-  }
-
-  .headline-text strong { color: var(--accent); }
-
-  /* ── STAT CARDS ── */
-  .stat-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 24px;
-  }
-
-  .stat-card {
-    padding: 16px;
-    background: var(--white);
-    border-left: 3px solid var(--border);
-  }
-
-  .stat-card.good { border-left-color: var(--green); background: var(--green-light); }
-  .stat-card.danger { border-left-color: var(--red); background: var(--red-light); }
-  .stat-card.accent { border-left-color: var(--accent); background: var(--accent-light); }
-  .stat-card.neutral { border-left-color: var(--border); background: var(--white); }
-
-  .stat-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 30px;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .stat-num.green { color: var(--green); }
-  .stat-num.red { color: var(--red); }
-  .stat-num.accent { color: var(--accent-dark); }
-  .stat-num.ink { color: var(--ink); }
-
-  .stat-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    color: var(--ink-muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    line-height: 1.5;
-  }
-
-  /* ── FINDINGS ── */
-  .finding {
-    padding: 16px 0;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .finding:last-child { border-bottom: none; }
-
-  .finding-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    color: var(--accent);
-    letter-spacing: 0.12em;
-    margin-bottom: 4px;
-  }
-
-  .finding-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 4px;
-  }
-
-  .finding-body {
-    font-size: 13px;
-    color: var(--ink-light);
-    line-height: 1.6;
-  }
-
-  /* ── COMPETITOR TABLE ── */
-  .comp-table-wrap {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 0 -20px;
-    padding: 0 20px 8px;
-  }
-
-  .comp-table {
-    width: 100%;
-    min-width: 500px;
-    border-collapse: collapse;
-    font-size: 12px;
-  }
-
-  .comp-table th {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    color: var(--ink-muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 10px 10px;
-    text-align: left;
-    border-bottom: 2px solid var(--ink);
-    white-space: nowrap;
-  }
-
-  .comp-table td {
-    padding: 12px 10px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: middle;
-    color: var(--ink-light);
-  }
-
-  .comp-table tr.you td {
-    background: var(--accent-light);
-    font-weight: 600;
-    color: var(--ink);
-  }
-
-  .comp-table tr.you td:first-child {
-    border-left: 3px solid var(--accent);
-  }
-
-  .spa-name { font-weight: 600; color: var(--ink); font-size: 13px; }
-  .spa-sub { font-size: 10px; color: var(--ink-muted); }
-  .stars { color: #d4a017; font-size: 10px; }
-
-  .vel-wrap { display: flex; align-items: center; gap: 6px; }
-  .vel-bar { height: 4px; background: var(--border); flex: 1; border-radius: 2px; overflow: hidden; min-width: 40px; }
-  .vel-fill { height: 100%; border-radius: 2px; }
-  .vel-fill.high { background: var(--green); }
-  .vel-fill.mid { background: #d4a017; }
-  .vel-fill.low { background: var(--red); }
-  .vel-num { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--ink-muted); white-space: nowrap; }
-
-  /* ── SCROLL HINT ── */
-  .scroll-hint {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: var(--ink-muted);
-    letter-spacing: 0.1em;
-    text-align: center;
-    padding: 8px 0 0;
-  }
-
-  /* ── COMPETITOR CARDS ── */
-  .comp-card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    margin-bottom: 16px;
-    overflow: hidden;
-  }
-
-  .comp-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 16px;
-    border-bottom: 1px solid var(--border);
-    background: var(--cream);
-  }
-
-  .comp-card-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--ink);
-  }
-
-  .comp-card-meta {
-    font-size: 11px;
-    color: var(--ink-muted);
-    margin-top: 2px;
-  }
-
-  .comp-card-rating {
-    text-align: right;
-    flex-shrink: 0;
-    margin-left: 12px;
-  }
-
-  .comp-card-rating-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--ink);
-    line-height: 1;
-  }
-
-  .comp-card-count {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    color: var(--ink-muted);
-  }
-
-  .comp-card-body { padding: 16px; }
-
-  .tag-row { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
-
-  .tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    padding: 3px 8px;
-    border-radius: 2px;
-    letter-spacing: 0.04em;
-  }
-
-  .tag.s { background: var(--green-light); color: var(--green); }
-  .tag.w { background: var(--red-light); color: var(--red); }
-  .tag.n { background: var(--cream); color: var(--ink-muted); border: 1px solid var(--border); }
-
-  .comp-desc {
-    font-size: 13px;
-    color: var(--ink-light);
-    line-height: 1.6;
-    margin-bottom: 12px;
-  }
-
-  .weakness-box {
-    background: var(--red-light);
-    border: 1px solid #f0c8c4;
-    padding: 12px;
-  }
-
-  .weakness-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    color: var(--red);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .weakness-text {
-    font-size: 12px;
-    color: #7a3030;
-    line-height: 1.55;
-  }
-
-  .quote-block {
-    background: var(--cream);
-    border-left: 2px solid var(--border);
-    padding: 10px 12px;
-    margin-top: 10px;
-  }
-
-  .quote-text {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 12px;
-    color: var(--ink-light);
-    line-height: 1.55;
-  }
-
-  .quote-attr {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    color: var(--ink-muted);
-    margin-top: 4px;
-    letter-spacing: 0.06em;
-  }
-
-  /* ── GAP MATRIX ── */
-  .gap-table-wrap {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 0 -20px;
-    padding: 0 20px 8px;
-  }
-
-  .gap-table {
-    width: 100%;
-    min-width: 420px;
-    border-collapse: collapse;
-    font-size: 12px;
-  }
-
-  .gap-table th {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    color: var(--ink-muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 8px 8px;
-    text-align: center;
-    border-bottom: 2px solid var(--ink);
-    white-space: nowrap;
-  }
-
-  .gap-table th:first-child { text-align: left; }
-
-  .gap-table td {
-    padding: 10px 8px;
-    border-bottom: 1px solid var(--border);
-    text-align: center;
-    vertical-align: middle;
-  }
-
-  .gap-table td:first-child {
-    text-align: left;
-    font-weight: 500;
-    color: var(--ink);
-    font-size: 12px;
-    white-space: nowrap;
-  }
-
-  .gap-table th.you-col, .gap-table td.you-col {
-    background: var(--accent-light);
-  }
-
-  .dot {
-    display: inline-flex;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: 700;
-  }
-
-  .dot.s { background: var(--green); color: white; }
-  .dot.w { background: var(--red); color: white; }
-  .dot.m { background: #d4a017; color: white; }
-  .dot.n { background: var(--border); color: var(--ink-muted); }
-
-  /* ── EXPLOIT CARDS ── */
-  .exploit-card {
-    background: var(--cream);
-    border-left: 4px solid var(--accent);
-    padding: 20px;
-    margin-bottom: 16px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .exploit-bg-num {
-    position: absolute;
-    right: -8px;
-    top: -8px;
-    font-family: 'Playfair Display', serif;
-    font-size: 80px;
-    font-weight: 700;
-    color: var(--accent);
-    opacity: 0.08;
-    line-height: 1;
-    pointer-events: none;
-  }
-
-  .exploit-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    color: var(--accent);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .exploit-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--ink);
-    line-height: 1.2;
-    margin-bottom: 10px;
-  }
-
-  .exploit-body {
-    font-size: 13px;
-    color: var(--ink-light);
-    line-height: 1.65;
-    margin-bottom: 12px;
-  }
-
-  .exploit-action {
-    background: var(--white);
-    border-left: 2px solid var(--accent);
-    padding: 10px 12px;
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-  }
-
-  .exploit-action-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    flex-shrink: 0;
-    padding-top: 1px;
-  }
-
-  .exploit-action-text {
-    font-size: 12px;
-    color: var(--ink);
-    line-height: 1.55;
-  }
-
-  /* ── RESPONSE GRADES ── */
-  .grade-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    margin-bottom: 20px;
-  }
-
-  .grade-item {
-    background: var(--white);
-    padding: 14px 8px;
-    text-align: center;
-  }
-
-  .grade-item.you { background: var(--accent-light); }
-
-  .grade-name {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    color: var(--ink-muted);
-    letter-spacing: 0.06em;
-    margin-bottom: 6px;
-    line-height: 1.4;
-  }
-
-  .grade-letter {
-    font-family: 'Playfair Display', serif;
-    font-size: 26px;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .grade-letter.a { color: var(--green); }
-  .grade-letter.b { color: #5c9e6e; }
-  .grade-letter.c { color: #d4a017; }
-  .grade-letter.d { color: #c0732b; }
-  .grade-letter.f { color: var(--red); }
-
-  .grade-note {
-    font-size: 9px;
-    color: var(--ink-muted);
-    line-height: 1.4;
-  }
-
-  /* ── ACTION ITEMS ── */
-  .action-item {
-    display: flex;
-    gap: 14px;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--border);
-    align-items: flex-start;
-  }
-
-  .action-item:last-child { border-bottom: none; }
-
-  .action-badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    padding: 4px 8px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--white);
-    white-space: nowrap;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
-  .badge-now { background: var(--accent-dark); }
-  .badge-soon { background: var(--teal); }
-  .badge-later { background: var(--ink-muted); }
-
-  .action-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 4px;
-  }
-
-  .action-desc {
-    font-size: 12px;
-    color: var(--ink-light);
-    line-height: 1.55;
-  }
-
-  /* ── BACK COVER ── */
-  .back-cover {
-    background: var(--ink);
-    padding: 64px 24px;
-    text-align: center;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .back-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: var(--accent);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-  }
-
-  .back-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--white);
-    line-height: 1.2;
-    margin-bottom: 24px;
-    max-width: 280px;
-  }
-
-  .back-title em { color: var(--accent); font-style: italic; }
-
-  .back-sub {
-    font-size: 13px;
-    color: #666;
-    line-height: 1.65;
-    max-width: 260px;
-    margin-bottom: 40px;
-  }
-
-  .back-rule {
-    width: 32px;
-    height: 1px;
-    background: #333;
-    margin: 0 auto 32px;
-  }
-
-  .back-cta {
-    border: 1px solid var(--accent);
-    padding: 14px 28px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--accent);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 40px;
-    display: inline-block;
-  }
-
-  .back-fine {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    color: #333;
-    letter-spacing: 0.06em;
-    line-height: 1.8;
-  }
-
-  /* ── SENTIMENT TABLE ── */
-  .sent-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-  }
-
-  .sent-table th {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    color: var(--ink-muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 8px 8px;
-    border-bottom: 2px solid var(--ink);
-    text-align: center;
-  }
-
-  .sent-table th:first-child { text-align: left; }
-
-  .sent-table td {
-    padding: 10px 8px;
-    border-bottom: 1px solid var(--border);
-    text-align: center;
-    color: var(--ink-light);
-    vertical-align: middle;
-  }
-
-  .sent-table td:first-child {
-    text-align: left;
-    font-weight: 500;
-    color: var(--ink);
-  }
-
-  .sent-table td.you-col { background: var(--accent-light); font-weight: 600; }
-
-  .score-high { color: var(--green); font-weight: 600; }
-  .score-low { color: var(--red); font-weight: 600; }
-  .score-na { color: var(--ink-muted); font-style: italic; }
-
-  /* ── UTILITIES ── */
-  .mt-sm { margin-top: 12px; }
-  .mt-md { margin-top: 20px; }
-  .mb-md { margin-bottom: 20px; }
-
-  .note {
-    font-size: 11px;
-    color: var(--ink-muted);
-    font-style: italic;
-    margin-top: 8px;
-  }
-
-  .urgency-badge {
-    display: inline-block;
-    background: var(--red);
-    color: var(--white);
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    padding: 6px 14px;
-    margin-bottom: 16px;
-  }
-
-  .two-col-findings {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .findings-group {
-    margin-bottom: 24px;
-  }
-
-  .findings-group-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Outer Intel — Competitive Reputation Audit · Nashville, TN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0D1B35;
+      --navy-mid: #152747;
+      --slate: #1E3050;
+      --accent: #0EA5E9;
+      --accent-dark: #0284C7;
+      --teal: #0891B2;
+      --white: #FFFFFF;
+      --gray-50: #F8FAFC;
+      --gray-100: #F1F5F9;
+      --gray-200: #E2E8F0;
+      --gray-400: #94A3B8;
+      --gray-600: #475569;
+      --gray-800: #1E293B;
+      --win: #059669;
+      --win-bg: #ECFDF5;
+      --lose: #DC2626;
+      --lose-bg: #FEF2F2;
+      --neutral: #94A3B8;
+      --neutral-bg: #F8FAFC;
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+      --mono: 'DM Mono', monospace;
+      --max-w: 860px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      font-size: 15px;
+      color: var(--gray-800);
+      background: var(--gray-100);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── COVER ─── */
+    #cover {
+      background: var(--navy);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    #cover::before {
+      content: '';
+      position: absolute;
+      top: -300px; right: -300px;
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(14,165,233,0.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    #cover::after {
+      content: '';
+      position: absolute;
+      bottom: -200px; left: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(14,165,233,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .cover-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative; z-index: 1;
+    }
+    .cover-logo-mark svg { display: block; }
+    .cover-wordmark {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 700;
+      color: white;
+      letter-spacing: -0.3px;
+    }
+    .cover-wordmark span { color: var(--accent); }
+
+    .cover-body {
+      position: relative; z-index: 1;
+      max-width: 640px;
+    }
+    .cover-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(14,165,233,0.12);
+      border: 1px solid rgba(14,165,233,0.25);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .cover-tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+    .cover-headline {
+      font-family: var(--serif);
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 800;
+      line-height: 1.08;
+      color: white;
+      margin-bottom: 20px;
+    }
+    .cover-headline em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .cover-sub {
+      font-size: 16px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.55);
+      max-width: 520px;
+      margin-bottom: 48px;
+    }
+    .cover-stats {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .cover-stat-item { }
+    .cover-stat-num {
+      font-family: var(--serif);
+      font-size: 32px;
+      font-weight: 700;
+      color: white;
+      line-height: 1;
+    }
+    .cover-stat-num.accent { color: var(--accent); }
+    .cover-stat-label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      margin-top: 4px;
+      letter-spacing: 0.04em;
+    }
+    .cover-divider {
+      width: 1px;
+      background: rgba(255,255,255,0.1);
+      align-self: stretch;
+    }
+
+    .cover-footer {
+      position: relative; z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .cover-client {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.6;
+    }
+    .cover-client strong { color: rgba(255,255,255,0.7); font-weight: 500; }
+    .cover-scroll {
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── NAV ─── */
+    #report-nav {
+      background: var(--navy);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .nav-brand {
+      font-family: var(--serif);
+      font-size: 14px;
+      font-weight: 700;
+      color: white;
+      white-space: nowrap;
+      padding: 14px 0;
+    }
+    .nav-brand span { color: var(--accent); }
+    .nav-links {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      padding: 14px 14px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: color 0.15s;
+      border-bottom: 2px solid transparent;
+    }
+    .nav-links a:hover { color: white; }
+    .nav-links a.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* ─── REPORT BODY ─── */
+    .report-body {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 32px 80px;
+    }
+
+    /* ─── SECTION WRAPPER ─── */
+    .report-section {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .report-section:last-child { border-bottom: none; }
+
+    .section-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .section-num {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      opacity: 0.8;
+    }
+    .section-rule {
+      flex: 1;
+      height: 1px;
+      background: var(--gray-200);
+    }
+    .section-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+    }
+
+    h2.section-title {
+      font-family: var(--serif);
+      font-size: clamp(24px, 3.5vw, 36px);
+      font-weight: 700;
+      line-height: 1.18;
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+    .section-lead {
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--gray-600);
+      max-width: 580px;
+      margin-bottom: 40px;
+    }
+
+    /* ─── URGENCY BADGE ─── */
+    .urgency-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(220,38,38,0.08);
+      border: 1px solid rgba(220,38,38,0.2);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #DC2626;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    /* ─── KEY INSIGHT BOX ─── */
+    .insight-box {
+      background: var(--navy);
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .insight-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--accent);
+    }
+    .insight-box-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .insight-box p {
+      font-size: 16px;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.8);
+    }
+    .insight-box strong { color: white; }
+
+    /* ─── STAT CARDS ─── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 20px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--accent);
+    }
+    .stat-card.win::before { background: var(--win); }
+    .stat-card.lose::before { background: var(--lose); }
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-num.accent { color: var(--accent); }
+    .stat-num.win { color: var(--win); }
+    .stat-num.lose { color: var(--lose); }
+    .stat-label {
+      font-size: 11px;
+      color: var(--gray-600);
+      line-height: 1.4;
+    }
+    .stat-sub {
+      font-size: 10px;
+      color: var(--gray-400);
+      margin-top: 4px;
+    }
+
+    /* ─── FINDINGS ─── */
+    .findings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .finding-card {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .finding-num {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+    .finding-card h4 {
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .finding-card p {
+      font-size: 13px;
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+
+    /* ─── EXPLOIT CARDS ─── */
+    .exploit-preview {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .exploit-prev-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .exploit-prev-num {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .exploit-prev-card h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.4;
+    }
+
+    /* ─── DATA TABLE ─── */
+    .data-table-wrap {
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid var(--gray-200);
+      margin-bottom: 16px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    thead th {
+      background: var(--navy);
+      color: rgba(255,255,255,0.7);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 12px 16px;
+      text-align: left;
+      white-space: nowrap;
+    }
+    thead th:first-child { border-radius: 0; }
+    tbody tr { border-bottom: 1px solid var(--gray-100); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr.highlight { background: rgba(14,165,233,0.04); }
+    tbody tr.you-row { background: rgba(14,165,233,0.06); }
+    tbody td {
+      padding: 12px 16px;
+      color: var(--gray-700);
+      vertical-align: middle;
+    }
+    tbody td:first-child { font-weight: 500; color: var(--navy); }
+    .td-rating { font-weight: 600; color: var(--navy); }
+    .td-count { font-weight: 700; color: var(--navy); font-family: var(--mono); font-size: 13px; }
+    .td-velocity { font-family: var(--mono); font-size: 12px; color: var(--gray-600); }
+    .you-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 2px 7px;
+      border-radius: 100px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    /* ─── SENTIMENT MATRIX ─── */
+    .score-cell {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .score-high { color: var(--win); }
+    .score-mid { color: var(--gray-600); }
+    .score-low { color: var(--lose); }
+    .score-na { color: var(--gray-400); font-style: italic; font-size: 11px; }
+
+    /* ─── COMPETITOR PROFILES ─── */
+    .competitor-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .competitor-header {
+      background: var(--gray-50);
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .competitor-name {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 3px;
+    }
+    .competitor-location {
+      font-size: 12px;
+      color: var(--gray-400);
+    }
+    .competitor-meta {
+      display: flex;
+      gap: 20px;
+      flex-shrink: 0;
+    }
+    .competitor-meta-item { text-align: right; }
+    .competitor-meta-num {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .competitor-meta-label {
+      font-size: 10px;
+      color: var(--gray-400);
+      margin-top: 2px;
+    }
+    .competitor-body { padding: 24px; }
+    .competitor-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .tag {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-weight: 500;
+    }
+    .tag-win { background: var(--win-bg); color: var(--win); }
+    .tag-lose { background: var(--lose-bg); color: var(--lose); }
+    .competitor-body p {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--gray-600);
+      margin-bottom: 16px;
+    }
+    .vulnerability-box {
+      background: rgba(220,38,38,0.04);
+      border: 1px solid rgba(220,38,38,0.12);
+      border-left: 3px solid var(--lose);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+    .vulnerability-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--lose);
+      margin-bottom: 6px;
+    }
+    .vulnerability-box p {
+      font-size: 13px;
+      color: var(--gray-700);
+      margin-bottom: 0;
+    }
+    .pull-quote {
+      background: var(--gray-50);
+      border-left: 3px solid var(--gray-200);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      font-size: 13px;
+      font-style: italic;
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+    .pull-quote cite {
+      display: block;
+      font-size: 10px;
+      font-style: normal;
+      color: var(--gray-400);
+      margin-top: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── GAP MATRIX ─── */
+    .gap-win { color: var(--win); font-weight: 700; font-size: 15px; }
+    .gap-lose { color: var(--lose); font-weight: 700; font-size: 15px; }
+    .gap-neutral { color: var(--gray-400); font-size: 15px; }
+    .gap-question { color: var(--gray-400); font-size: 13px; font-style: italic; }
+    .gap-legend {
+      display: flex;
+      gap: 20px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .gap-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--gray-600);
+    }
+
+    /* ─── AI SECTION ─── */
+    #ai-visibility {
+      background: var(--navy);
+      margin: 0 -32px;
+      padding: 64px 32px;
+    }
+    #ai-visibility .section-num { color: rgba(14,165,233,0.7); }
+    #ai-visibility .section-rule { background: rgba(255,255,255,0.08); }
+    #ai-visibility .section-tag { color: rgba(255,255,255,0.3); }
+    #ai-visibility h2.section-title { color: white; }
+    #ai-visibility .section-lead { color: rgba(255,255,255,0.55); }
+    .ai-result-panel {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .ai-query-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 8px;
+      padding: 10px 16px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      font-family: var(--mono);
+    }
+    .ai-query-icon { color: var(--accent); font-size: 14px; }
+    .ai-result-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .ai-result-row:last-child { border-bottom: none; }
+    .ai-rank {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+      font-family: var(--mono);
+    }
+    .rank-shown { background: var(--accent); color: white; }
+    .rank-dim { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4); }
+    .ai-result-name { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.9); margin-bottom: 4px; }
+    .ai-result-why { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+    .ai-result-why em { color: var(--accent); font-style: normal; }
+    .ai-not-shown {
+      font-size: 11px;
+      color: rgba(255,255,255,0.25);
+      text-align: center;
+      padding: 10px 0 4px;
+      font-style: italic;
+    }
+    .ai-insight-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 28px;
+    }
+    .ai-insight-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .ai-insight-card-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .ai-insight-card p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.65;
+    }
+    .ai-insight-card strong { color: rgba(255,255,255,0.85); }
+
+    /* ─── EXPLOIT SECTION ─── */
+    .exploit-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .exploit-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 24px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .exploit-num-badge {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .exploit-type {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .exploit-header h3 {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.25;
+    }
+    .exploit-body { padding: 24px; }
+    .exploit-body p {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--gray-600);
+      margin-bottom: 16px;
+    }
+    .action-box {
+      background: rgba(14,165,233,0.06);
+      border: 1px solid rgba(14,165,233,0.15);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 16px;
+    }
+    .action-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .action-box p {
+      font-size: 13px;
+      color: var(--gray-700);
+      margin-bottom: 0;
+      line-height: 1.6;
+    }
+
+    /* ─── PRIORITY PLAN ─── */
+    .priority-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+    .priority-timeline::before {
+      content: '';
+      position: absolute;
+      left: 19px; top: 28px;
+      width: 2px;
+      height: calc(100% - 56px);
+      background: var(--gray-200);
+    }
+    .priority-item {
+      display: flex;
+      gap: 20px;
+      padding: 20px 0;
+    }
+    .priority-dot {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 2px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .priority-dot.now { border-color: var(--accent); background: var(--accent); }
+    .priority-dot.now svg { color: white; }
+    .priority-dot svg { color: var(--gray-400); width: 16px; height: 16px; }
+    .priority-content { padding-top: 8px; }
+    .priority-when {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .priority-when.later { color: var(--gray-400); }
+    .priority-content h4 {
+      font-family: var(--serif);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+    .priority-content p {
+      font-size: 13px;
+      color: var(--gray-600);
+      line-height: 1.65;
+    }
+
+    /* ─── REPORT FOOTER ─── */
+    #report-footer {
+      background: var(--navy);
+      padding: 48px 32px 40px;
+      text-align: center;
+      margin: 0 -32px -80px;
+    }
+    .report-footer-headline {
+      font-family: var(--serif);
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 700;
+      color: white;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .report-footer-headline em { font-style: italic; color: var(--accent); }
+    .report-footer-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 32px;
+    }
+    .report-footer-cta {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 14px 32px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .report-footer-cta:hover { background: var(--accent-dark); }
+    .report-footer-meta {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 11px;
+      color: rgba(255,255,255,0.2);
+      line-height: 1.8;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 700px) {
+      #cover { padding: 32px 24px; }
+      .report-body { padding: 0 20px 60px; }
+      #report-nav { display: none; }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .findings-grid { grid-template-columns: 1fr; }
+      .exploit-preview { grid-template-columns: 1fr; }
+      .competitor-header { flex-direction: column; }
+      .competitor-meta { flex-direction: row; justify-content: flex-start; }
+      .competitor-meta-item { text-align: left; }
+      .ai-insight-cards { grid-template-columns: 1fr; }
+      #ai-visibility { margin: 0 -20px; padding: 48px 20px; }
+      #report-footer { margin: 0 -20px -60px; padding: 40px 20px; }
+      .cover-stats { gap: 24px; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- COVER -->
-<div class="cover" id="top">
-  <div class="cover-top">
-    <div class="cover-brand">Reputation Intelligence</div>
-    <div class="cover-tag">Sample Report</div>
+<!-- ═══════════════════════ COVER ═══════════════════════ -->
+<section id="cover">
+  <div class="cover-header">
+    <div class="cover-logo-mark">
+      <svg width="44" height="34" viewBox="0 0 48 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="1" width="26" height="20" rx="5" stroke="#0EA5E9" stroke-width="1.5" fill="none" opacity="0.5"/>
+        <path d="M7 21 L3 27 L13 21" stroke="#0EA5E9" stroke-width="1.5" fill="none" stroke-linejoin="round" opacity="0.5"/>
+        <text x="4" y="10" font-size="5" fill="#0EA5E9" opacity="0.6">★★★★★</text>
+        <rect x="4" y="13" width="14" height="2" rx="1" fill="#0EA5E9" opacity="0.4"/>
+        <rect x="4" y="17" width="10" height="2" rx="1" fill="#0EA5E9" opacity="0.3"/>
+        <rect x="20" y="10" width="26" height="20" rx="5" fill="rgba(14,165,233,0.08)" stroke="#0EA5E9" stroke-width="2"/>
+        <path d="M40 30 L45 36 L36 30" stroke="#0EA5E9" stroke-width="2" fill="none" stroke-linejoin="round"/>
+        <rect x="24" y="20" width="3" height="6" rx="0.5" fill="#0EA5E9" opacity="0.35"/>
+        <rect x="29" y="17" width="3" height="9" rx="0.5" fill="#0EA5E9" opacity="0.6"/>
+        <rect x="34" y="19" width="3" height="7" rx="0.5" fill="#0EA5E9" opacity="0.45"/>
+        <rect x="39" y="15" width="3" height="11" rx="0.5" fill="#0EA5E9" opacity="0.9"/>
+      </svg>
+    </div>
+    <div class="cover-wordmark">Outer<span>Intel</span></div>
   </div>
 
   <div class="cover-body">
-    <div class="cover-eyebrow">Competitive Audit · Nashville, TN</div>
-    <div class="cover-title">What Your Competitors' Patients Are <em>Saying.</em></div>
-    <div class="cover-rule"></div>
-    <div class="cover-sub">A full competitive reputation analysis across 4 local competitors — review sentiment, positioning gaps, and 3 specific opportunities to take market share.</div>
-
+    <div class="cover-tag">Competitive Reputation Audit · Nashville, TN</div>
+    <h1 class="cover-headline">What your competitors'<br/>patients are <em>saying.</em></h1>
+    <p class="cover-sub">A full competitive intelligence analysis across 4 local competitors — review sentiment, perception gaps, AI visibility, and 3 specific opportunities to take market share.</p>
     <div class="cover-stats">
-      <div class="cover-stat">
+      <div class="cover-stat-item">
         <div class="cover-stat-num">5.0★</div>
-        <div class="cover-stat-label">Client Rating<br>Tied for best</div>
+        <div class="cover-stat-label">Client rating · Best in market</div>
       </div>
-      <div class="cover-stat">
-        <div class="cover-stat-num" style="color: var(--red);">72</div>
-        <div class="cover-stat-label">Client Reviews<br>Lowest in market</div>
+      <div class="cover-divider"></div>
+      <div class="cover-stat-item">
+        <div class="cover-stat-num accent">72</div>
+        <div class="cover-stat-label">Client reviews · Lowest in set</div>
       </div>
-      <div class="cover-stat">
+      <div class="cover-divider"></div>
+      <div class="cover-stat-item">
         <div class="cover-stat-num">632</div>
-        <div class="cover-stat-label">Market Leader<br>Review count</div>
+        <div class="cover-stat-label">Market leader review count</div>
       </div>
-      <div class="cover-stat">
-        <div class="cover-stat-num" style="color: var(--red);">~4/mo</div>
-        <div class="cover-stat-label">Client Velocity<br>Market avg: 9–10</div>
+      <div class="cover-divider"></div>
+      <div class="cover-stat-item">
+        <div class="cover-stat-num accent">~4/mo</div>
+        <div class="cover-stat-label">Client velocity · Avg: 9–10</div>
       </div>
     </div>
   </div>
 
-  <div class="cover-bottom">
-    <div>
-      <div class="cover-client-name">Client A · Med Spa</div>
-      <div class="cover-client-sub">Nashville, TN · March 2026</div>
+  <div class="cover-footer">
+    <div class="cover-client">
+      <strong>Client A · Med Spa</strong><br/>
+      Nashville, TN · March 2026 · Sample Report
     </div>
-    <div class="cover-scroll">Scroll ↓</div>
+    <div class="cover-scroll">Scroll to read ↓</div>
   </div>
-</div>
+</section>
 
-<!-- NAV -->
-<nav class="section-nav">
+<!-- ═══════════════════════ NAV ═══════════════════════ -->
+<nav id="report-nav">
   <div class="nav-inner">
-    <a href="#summary" class="nav-link">Summary</a>
-    <a href="#snapshot" class="nav-link">Snapshot</a>
-    <a href="#profiles" class="nav-link">Competitors</a>
-    <a href="#gaps" class="nav-link">Gap Analysis</a>
-    <a href="#exploit" class="nav-link">The Exploit</a>
-    <a href="#actions" class="nav-link">Actions</a>
+    <div class="nav-brand">Outer<span>Intel</span></div>
+    <div class="nav-links">
+      <a href="#summary">Summary</a>
+      <a href="#snapshot">Snapshot</a>
+      <a href="#profiles">Competitors</a>
+      <a href="#gaps">Gap Analysis</a>
+      <a href="#ai-visibility">AI Visibility</a>
+      <a href="#exploit">The Exploit</a>
+      <a href="#actions">Actions</a>
+    </div>
   </div>
 </nav>
 
-<!-- 01 EXECUTIVE SUMMARY -->
-<div class="section" id="summary">
-  <div class="section-eyebrow">01 — Executive Summary</div>
-  <div class="section-title">You produce the best outcomes in this market. Almost nobody knows it.</div>
-  <div class="section-rule"></div>
+<!-- ═══════════════════════ REPORT BODY ═══════════════════════ -->
+<div class="report-body">
 
-  <div class="urgency-badge">URGENCY: HIGH</div>
+  <!-- 01 EXECUTIVE SUMMARY -->
+  <section class="report-section" id="summary">
+    <div class="section-eyebrow">
+      <span class="section-num">01</span>
+      <div class="section-rule"></div>
+      <span class="section-tag">Executive Summary</span>
+    </div>
+    <h2 class="section-title">You produce the best outcomes in this market. Almost nobody knows it.</h2>
 
-  <div class="headline-box">
-    <div class="headline-label">Key Insight</div>
-    <div class="headline-text">Client A patients use language no competitor earns — <strong>"most beautiful results I've ever had," "freaking ARTIST," "20/10."</strong> The problem is not quality. It is visibility. You have 72 Google reviews. Your nearest competitor has 632. That gap is costing you new patients every single day.</div>
-  </div>
+    <div class="urgency-badge">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+      Urgency: High
+    </div>
 
-  <div class="stat-grid">
-    <div class="stat-card good">
-      <div class="stat-num green">5.0</div>
-      <div class="stat-label">Your Rating<br>Best in market</div>
+    <div class="insight-box">
+      <div class="insight-box-label">Key Insight</div>
+      <p>Client A patients use language no competitor earns — <strong>"most beautiful results I've ever had," "freaking ARTIST," "20/10."</strong> The problem is not quality. It is visibility. You have 72 Google reviews. Your nearest competitor has 632. That gap is costing you new patients every single day — and it is now costing you AI visibility too.</p>
     </div>
-    <div class="stat-card danger">
-      <div class="stat-num red">72</div>
-      <div class="stat-label">Your Reviews<br>Lowest in set</div>
-    </div>
-    <div class="stat-card neutral">
-      <div class="stat-num ink">632</div>
-      <div class="stat-label">ElaMar Reviews<br>Market leader</div>
-    </div>
-    <div class="stat-card accent">
-      <div class="stat-num accent">~4/mo</div>
-      <div class="stat-label">Your Velocity<br>Avg is 9–10/mo</div>
-    </div>
-  </div>
 
-  <div class="two-col-findings">
-    <div class="findings-group">
-      <div class="findings-group-title">What This Report Found</div>
-      <div class="finding">
+    <div class="stat-grid">
+      <div class="stat-card win">
+        <div class="stat-num win">5.0</div>
+        <div class="stat-label">Your rating</div>
+        <div class="stat-sub">Best in market</div>
+      </div>
+      <div class="stat-card lose">
+        <div class="stat-num lose">72</div>
+        <div class="stat-label">Your reviews</div>
+        <div class="stat-sub">Lowest in set</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">632</div>
+        <div class="stat-label">ElaMar reviews</div>
+        <div class="stat-sub">Market leader</div>
+      </div>
+      <div class="stat-card lose">
+        <div class="stat-num lose">~4/mo</div>
+        <div class="stat-label">Your velocity</div>
+        <div class="stat-sub">Market avg: 9–10</div>
+      </div>
+    </div>
+
+    <div class="findings-grid">
+      <div class="finding-card">
         <div class="finding-num">FINDING 01</div>
-        <div class="finding-title">Injector artistry is a genuine differentiator</div>
-        <div class="finding-body">[Lead Injector] is described in terms — "artist," "most beautiful ever" — that no competitor earns. This is a rare positioning asset currently invisible in search results.</div>
+        <h4>Injector artistry is a genuine differentiator</h4>
+        <p>Lead Injector is described in terms — "artist," "most beautiful ever" — that no competitor earns. A rare positioning asset currently invisible in search.</p>
       </div>
-      <div class="finding">
+      <div class="finding-card">
         <div class="finding-num">FINDING 02</div>
-        <div class="finding-title">Laser body treatments are uncontested</div>
-        <div class="finding-body">Client A is the only practice in this set with laser stretch mark treatment in reviews. Zero competitive noise in this category.</div>
+        <h4>Laser body treatments are uncontested</h4>
+        <p>Client A is the only practice in this set with laser stretch mark treatment in reviews. Zero competitive noise in this category.</p>
       </div>
-      <div class="finding">
+      <div class="finding-card">
         <div class="finding-num">FINDING 03</div>
-        <div class="finding-title">NakedMD has an operational vulnerability</div>
-        <div class="finding-body">The only unprompted operational complaint in this entire dataset — a 35-minute in-room wait — belongs to NakedMD. Consistency is their weakness.</div>
+        <h4>NakedMD has an operational vulnerability</h4>
+        <p>The only unprompted operational complaint in this entire dataset — a 35-minute in-room wait — belongs to NakedMD. Consistency is their weakness.</p>
       </div>
     </div>
 
-    <div class="findings-group">
-      <div class="findings-group-title">The Three Exploits</div>
-      <div class="finding">
-        <div class="finding-num">EXPLOIT 01</div>
-        <div class="finding-title">Own "Clinical Artistry" as a category</div>
-        <div class="finding-body">Nobody in this market owns precision and outcomes. Every competitor competes on warmth. You already have the review language — make it explicit.</div>
+    <div class="exploit-preview">
+      <div class="exploit-prev-card">
+        <div class="exploit-prev-num">EXPLOIT 01 · Positioning</div>
+        <h4>Own "Clinical Artistry" as a category</h4>
       </div>
-      <div class="finding">
-        <div class="finding-num">EXPLOIT 02</div>
-        <div class="finding-title">Activate laser body treatments</div>
-        <div class="finding-body">Patients who want this service don't know you offer it. A 4-post Instagram series faces zero local competitive noise.</div>
+      <div class="exploit-prev-card">
+        <div class="exploit-prev-num">EXPLOIT 02 · Service</div>
+        <h4>Activate laser body treatments</h4>
       </div>
-      <div class="finding">
-        <div class="finding-num">EXPLOIT 03</div>
-        <div class="finding-title">Build a review generation ritual</div>
-        <div class="finding-body">A 48-hour post-appointment text from [Lead Injector] personally would likely triple velocity within 90 days given your satisfaction scores.</div>
+      <div class="exploit-prev-card">
+        <div class="exploit-prev-num">EXPLOIT 03 · Review Engine</div>
+        <h4>Build a review generation ritual</h4>
       </div>
     </div>
-  </div>
-</div>
+  </section>
 
-<!-- 02 COMPETITIVE SNAPSHOT -->
-<div class="section" id="snapshot">
-  <div class="section-eyebrow">02 — Competitive Snapshot</div>
-  <div class="section-title">Who You're Up Against</div>
-  <div class="section-rule"></div>
+  <!-- 02 COMPETITIVE SNAPSHOT -->
+  <section class="report-section" id="snapshot">
+    <div class="section-eyebrow">
+      <span class="section-num">02</span>
+      <div class="section-rule"></div>
+      <span class="section-tag">Competitive Snapshot</span>
+    </div>
+    <h2 class="section-title">Who you're up against</h2>
+    <p class="section-lead">Review volume, velocity, and sentiment mapped across your four nearest competitors.</p>
 
-  <div class="comp-table-wrap">
-    <table class="comp-table">
-      <thead>
-        <tr>
-          <th>Practice</th>
-          <th>Rating</th>
-          <th>Reviews</th>
-          <th>Velocity</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><div class="spa-name">ElaMar Nashville</div><div class="spa-sub">Charlotte Ave</div></td>
-          <td><span class="stars">★</span> 5.0</td>
-          <td><strong>632</strong></td>
-          <td>
-            <div class="vel-wrap">
-              <div class="vel-bar"><div class="vel-fill high" style="width:100%"></div></div>
-              <span class="vel-num">15–18</span>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td><div class="spa-name">NakedMD</div><div class="spa-sub">Murphy Ave</div></td>
-          <td><span class="stars">★</span> 4.8</td>
-          <td><strong>539</strong></td>
-          <td>
-            <div class="vel-wrap">
-              <div class="vel-bar"><div class="vel-fill high" style="width:80%"></div></div>
-              <span class="vel-num">11–13</span>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td><div class="spa-name">Complexion</div><div class="spa-sub">Murphy Rd</div></td>
-          <td><span class="stars">★</span> 4.9</td>
-          <td><strong>234</strong></td>
-          <td>
-            <div class="vel-wrap">
-              <div class="vel-bar"><div class="vel-fill mid" style="width:45%"></div></div>
-              <span class="vel-num">6–7</span>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td><div class="spa-name">Smiley Aesthetics</div><div class="spa-sub">White Bridge</div></td>
-          <td><span class="stars">★</span> 5.0</td>
-          <td><strong>170</strong></td>
-          <td>
-            <div class="vel-wrap">
-              <div class="vel-bar"><div class="vel-fill mid" style="width:50%"></div></div>
-              <span class="vel-num">7–8</span>
-            </div>
-          </td>
-        </tr>
-        <tr class="you">
-          <td><div class="spa-name">★ Client A</div><div class="spa-sub">YOU</div></td>
-          <td><span class="stars">★</span> 5.0</td>
-          <td><strong>72</strong></td>
-          <td>
-            <div class="vel-wrap">
-              <div class="vel-bar"><div class="vel-fill low" style="width:22%"></div></div>
-              <span class="vel-num">~3–4</span>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="scroll-hint">← Scroll to see full table</div>
-  </div>
+    <div class="data-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Practice</th>
+            <th>Rating</th>
+            <th>Reviews</th>
+            <th>Monthly Velocity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ElaMar Nashville <span style="font-size:11px;color:var(--gray-400);display:block;">Charlotte Ave</span></td>
+            <td class="td-rating">★ 5.0</td>
+            <td class="td-count">632</td>
+            <td class="td-velocity">15–18 / mo</td>
+          </tr>
+          <tr>
+            <td>NakedMD <span style="font-size:11px;color:var(--gray-400);display:block;">Murphy Ave</span></td>
+            <td class="td-rating">★ 4.8</td>
+            <td class="td-count">539</td>
+            <td class="td-velocity">11–13 / mo</td>
+          </tr>
+          <tr>
+            <td>Complexion Nashville <span style="font-size:11px;color:var(--gray-400);display:block;">Murphy Rd</span></td>
+            <td class="td-rating">★ 4.9</td>
+            <td class="td-count">234</td>
+            <td class="td-velocity">6–7 / mo</td>
+          </tr>
+          <tr>
+            <td>Smiley Aesthetics <span style="font-size:11px;color:var(--gray-400);display:block;">White Bridge</span></td>
+            <td class="td-rating">★ 5.0</td>
+            <td class="td-count">170</td>
+            <td class="td-velocity">7–8 / mo</td>
+          </tr>
+          <tr class="you-row">
+            <td><strong>Client A</strong> <span class="you-badge">YOU</span><span style="font-size:11px;color:var(--gray-400);display:block;">Nashville, TN</span></td>
+            <td class="td-rating" style="color:var(--win);">★ 5.0</td>
+            <td class="td-count" style="color:var(--lose);">72</td>
+            <td class="td-velocity" style="color:var(--lose);">~3–4 / mo</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-  <div class="mt-md">
-    <div class="section-eyebrow" style="margin-bottom: 12px;">Sentiment Scores by Theme</div>
-    <div class="comp-table-wrap">
-      <table class="sent-table">
+    <h3 style="font-family:var(--serif);font-size:18px;color:var(--navy);margin:36px 0 16px;">Sentiment Scores by Theme</h3>
+    <div class="data-table-wrap">
+      <table>
         <thead>
           <tr>
             <th>Theme</th>
             <th>ElaMar</th>
-            <th>Naked</th>
-            <th>Comp.</th>
+            <th>NakedMD</th>
+            <th>Complexion</th>
             <th>Smiley</th>
-            <th class="you-col">Client A</th>
+            <th>Client A</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>Staff Warmth</td>
-            <td class="score-high">9.2</td>
-            <td>8.4</td>
-            <td>8.8</td>
-            <td>9.0</td>
-            <td class="you-col">9.1</td>
+            <td class="score-cell score-high">9.2</td>
+            <td class="score-cell score-mid">8.4</td>
+            <td class="score-cell score-mid">8.8</td>
+            <td class="score-cell score-high">9.0</td>
+            <td class="score-cell score-high">9.1</td>
           </tr>
-          <tr>
+          <tr class="you-row">
             <td>Results Quality</td>
-            <td>7.8</td>
-            <td>7.5</td>
-            <td>8.2</td>
-            <td>8.6</td>
-            <td class="you-col score-high">9.8</td>
+            <td class="score-cell score-mid">7.8</td>
+            <td class="score-cell score-mid">7.5</td>
+            <td class="score-cell score-mid">8.2</td>
+            <td class="score-cell score-mid">8.6</td>
+            <td class="score-cell score-high" style="color:var(--win);font-weight:700;">9.8 ✓</td>
           </tr>
           <tr>
             <td>Atmosphere</td>
-            <td class="score-high">9.5</td>
-            <td>7.2</td>
-            <td>8.9</td>
-            <td>7.8</td>
-            <td class="you-col">8.5</td>
+            <td class="score-cell score-high">9.5</td>
+            <td class="score-cell score-mid">7.2</td>
+            <td class="score-cell score-high">8.9</td>
+            <td class="score-cell score-mid">7.8</td>
+            <td class="score-cell score-mid">8.5</td>
           </tr>
           <tr>
             <td>New Client Exp.</td>
-            <td class="score-high">9.4</td>
-            <td>8.1</td>
-            <td>8.5</td>
-            <td>8.8</td>
-            <td class="you-col score-low">6.2</td>
+            <td class="score-cell score-high">9.4</td>
+            <td class="score-cell score-mid">8.1</td>
+            <td class="score-cell score-mid">8.5</td>
+            <td class="score-cell score-mid">8.8</td>
+            <td class="score-cell score-low" style="color:var(--lose);font-weight:700;">6.2 ✗</td>
           </tr>
           <tr>
-            <td>Pricing/Value</td>
-            <td>5.8</td>
-            <td class="score-high">8.8</td>
-            <td>6.5</td>
-            <td>7.2</td>
-            <td class="you-col score-na">N/A</td>
+            <td>Pricing / Value</td>
+            <td class="score-cell score-low">5.8</td>
+            <td class="score-cell score-high">8.8</td>
+            <td class="score-cell score-mid">6.5</td>
+            <td class="score-cell score-mid">7.2</td>
+            <td class="score-na">N/A</td>
           </tr>
           <tr>
             <td>Scheduling</td>
-            <td>7.5</td>
-            <td class="score-low">5.5</td>
-            <td class="score-high">9.6</td>
-            <td>8.0</td>
-            <td class="you-col score-na">N/A</td>
+            <td class="score-cell score-mid">7.5</td>
+            <td class="score-cell score-low">5.5</td>
+            <td class="score-cell score-high">9.6</td>
+            <td class="score-cell score-mid">8.0</td>
+            <td class="score-na">N/A</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <p class="note">N/A = theme not mentioned in sampled reviews. Absence is itself a data point.</p>
+    <p style="font-size:11px;color:var(--gray-400);margin-top:10px;">N/A = theme not mentioned in sampled reviews. Absence is itself a data point.</p>
+  </section>
+
+  <!-- 03 COMPETITOR PROFILES -->
+  <section class="report-section" id="profiles">
+    <div class="section-eyebrow">
+      <span class="section-num">03</span>
+      <div class="section-rule"></div>
+      <span class="section-tag">Competitor Profiles</span>
+    </div>
+    <h2 class="section-title">Who they are and where they're weak</h2>
+    <p class="section-lead">Four competitors, profiled by patient language, positioning, and specific vulnerabilities.</p>
+
+    <!-- ElaMar -->
+    <div class="competitor-card">
+      <div class="competitor-header">
+        <div>
+          <div class="competitor-name">ElaMar Nashville</div>
+          <div class="competitor-location">Charlotte Ave · ~1.5 miles away</div>
+          <div class="competitor-tags" style="margin-top:10px;">
+            <span class="tag tag-win">Experience Theater</span>
+            <span class="tag tag-win">Named Injectors</span>
+            <span class="tag tag-win">New Client Ritual</span>
+            <span class="tag tag-lose">Face Only</span>
+          </div>
+        </div>
+        <div class="competitor-meta">
+          <div class="competitor-meta-item">
+            <div class="competitor-meta-num">5.0★</div>
+            <div class="competitor-meta-label">Rating</div>
+          </div>
+          <div class="competitor-meta-item">
+            <div class="competitor-meta-num">632</div>
+            <div class="competitor-meta-label">Reviews</div>
+          </div>
+        </div>
+      </div>
+      <div class="competitor-body">
+        <p>The market leader by volume. Built on a deliberate onboarding ritual — champagne, 5 free Botox units for new clients, personalized gift bags. Reviews consistently mention the vibe before the outcomes. A brand built on feeling, not clinical results.</p>
+        <div class="vulnerability-box">
+          <div class="vulnerability-label">Key Vulnerability</div>
+          <p>Their brand rests on ambiance over artistry. Patients who prioritize clinical outcomes over atmosphere have no strong reason to choose ElaMar. Zero mention of advanced body treatments or laser services.</p>
+        </div>
+        <div class="pull-quote">
+          "Beautiful soft girl interiors... Hydrafacial is my go to for maintenance."
+          <cite>Google Review · ElaMar Nashville</cite>
+        </div>
+      </div>
+    </div>
+
+    <!-- NakedMD -->
+    <div class="competitor-card">
+      <div class="competitor-header">
+        <div>
+          <div class="competitor-name">NakedMD Med Spa</div>
+          <div class="competitor-location">Murphy Ave · ~2.3 miles away</div>
+          <div class="competitor-tags" style="margin-top:10px;">
+            <span class="tag tag-win">Membership Program</span>
+            <span class="tag tag-win">New Client Pricing</span>
+            <span class="tag tag-win">Walk-Ins Welcome</span>
+            <span class="tag tag-lose">Wait Times</span>
+            <span class="tag tag-lose">Rotating Injectors</span>
+          </div>
+        </div>
+        <div class="competitor-meta">
+          <div class="competitor-meta-item">
+            <div class="competitor-meta-num">4.8★</div>
+            <div class="competitor-meta-label">Rating</div>
+          </div>
+          <div class="competitor-meta-item">
+            <div class="competitor-meta-num">539</div>
+            <div class="competitor-meta-label">Reviews</div>
+          </div>
+        </div>
+      </div>
+      <div class="competitor-body">
+        <p>Competes on accessibility and price-entry. The $199 new client special and transparent website pricing drive high volume. Their 4.8 rating — the only sub-5.0 in this set — reflects real operational friction.</p>
+        <div class="vulnerability-box">
+          <div class="vulnerability-label">Key Vulnerability</div>
+          <p>Volume over precision. Rotating injectors create inconsistent experiences. The only specific operational complaint in this dataset: a reviewer waited 35 minutes in a treatment room before anyone arrived.</p>
+        </div>
+        <div class="pull-quote">
+          "Almost 35 minutes of that time I was just sitting in the room waiting for someone to come."
+          <cite>Google Review · NakedMD Nashville</cite>
+        </div>
+      </div>
+    </div>
+
+    <!-- Complexion -->
+    <div class="competitor-card">
+      <div class="competitor-header">
+        <div>
+          <div class="competitor-name">Complexion Nashville</div>
+          <div class="competitor-location">Murphy Rd · ~1.8 miles away</div>
+          <div class="competitor-tags" style="margin-top:10px;">
+            <span class="tag tag-win">Skincare Expertise</span>
+            <span class="tag tag-win">Punctuality</span>
+            <span class="tag tag-win">Own Product Line</span>
+            <span class="tag tag-lose">No Injectables</span>
+          </div>
+        </div>
+        <div class="competitor-meta">
+          <div class="competitor-meta-item">
+            <div class="competitor-meta-num">4.9★</div>
+            <div class="competitor-meta-label">Rating</div>
+          </div>
+          <div class="competitor-meta-item">
+            <div class="competitor-meta-num">234</div>
+            <div class="competitor-meta-label">Reviews</div>
+          </div>
+        </div>
+      </div>
+      <div class="competitor-body">
+        <p>Not a direct competitor for injectables or laser services. Their niche is facial skincare and product retail. Strongest asset is punctuality — reviewers specifically call out "always on time." Best positioned as a referral partner, not a threat.</p>
+        <div class="vulnerability-box" style="border-left-color:var(--accent);background:rgba(14,165,233,0.04);border-color:rgba(14,165,233,0.15);">
+          <div class="vulnerability-label" style="color:var(--accent);">Opportunity</div>
+          <p>No injectable services. Consider a referral partnership — Complexion clients who want Botox have nowhere to go within that practice.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Smiley -->
+    <div class="competitor-card">
+      <div class="competitor-header">
+        <div>
+          <div class="competitor-name">Smiley Aesthetics</div>
+          <div class="competitor-location">White Bridge Pike · ~1.2 miles away</div>
+          <div class="competitor-tags" style="margin-top:10px;">
+            <span class="tag tag-win">Natural Results</span>
+            <span class="tag tag-win">No-Upsell Trust</span>
+            <span class="tag tag-lose">Single-Injector Risk</span>
+            <span class="tag tag-lose">Limited Services</span>
+          </div>
+        </div>
+        <div class="competitor-meta">
+          <div class="competitor-meta-item">
+            <div class="competitor-meta-num">5.0★</div>
+            <div class="competitor-meta-label">Rating</div>
+          </div>
+          <div class="competitor-meta-item">
+            <div class="competitor-meta-num">170</div>
+            <div class="competitor-meta-label">Reviews</div>
+          </div>
+        </div>
+      </div>
+      <div class="competitor-body">
+        <p>Client A's most comparable competitor — similar age, similar rating, similar injector-led profile. Their differentiator is the trust narrative: "never felt sold to." Injector Donna carries a disproportionate share of their review identity — a structural fragility.</p>
+        <div class="vulnerability-box">
+          <div class="vulnerability-label">Key Vulnerability</div>
+          <p>Single-injector dependency. No service breadth beyond core injectables. Client A's range (laser, Dysport, body treatments) and multi-provider team is a structural advantage that isn't being communicated.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 GAP ANALYSIS -->
+  <section class="report-section" id="gaps">
+    <div class="section-eyebrow">
+      <span class="section-num">04</span>
+      <div class="section-rule"></div>
+      <span class="section-tag">Gap Analysis</span>
+    </div>
+    <h2 class="section-title">Where you win. Where you're losing ground.</h2>
+    <p class="section-lead">Side-by-side matrix across 9 perception categories derived from real patient review language.</p>
+
+    <div class="data-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>ElaMar</th>
+            <th>NakedMD</th>
+            <th>Complexion</th>
+            <th>Smiley</th>
+            <th>Client A</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Review Volume</td>
+            <td class="gap-win">✓</td>
+            <td class="gap-win">✓</td>
+            <td class="gap-neutral">~</td>
+            <td class="gap-neutral">~</td>
+            <td class="gap-lose">✗</td>
+          </tr>
+          <tr>
+            <td>Review Velocity</td>
+            <td class="gap-win">✓</td>
+            <td class="gap-win">✓</td>
+            <td class="gap-neutral">~</td>
+            <td class="gap-neutral">~</td>
+            <td class="gap-lose">✗</td>
+          </tr>
+          <tr class="you-row">
+            <td>Results Quality</td>
+            <td class="gap-neutral">~</td>
+            <td class="gap-neutral">~</td>
+            <td class="gap-neutral">~</td>
+            <td class="gap-neutral">~</td>
+            <td class="gap-win">✓</td>
+          </tr>
+          <tr>
+            <td>Named Injector</td>
+            <td class="gap-win">✓</td>
+            <td class="gap-lose">✗</td>
+            <td class="gap-win">✓</td>
+            <td class="gap-win">✓</td>
+            <td class="gap-win">✓</td>
+          </tr>
+          <tr>
+            <td>New Client Ritual</td>
+            <td class="gap-win">✓</td>
+            <td class="gap-neutral">~</td>
+            <td class="gap-neutral">~</td>
+            <td class="gap-neutral">~</td>
+            <td class="gap-lose">✗</td>
+          </tr>
+          <tr class="you-row">
+            <td>Laser / Body Tx</td>
+            <td class="gap-lose">✗</td>
+            <td class="gap-lose">✗</td>
+            <td class="gap-lose">✗</td>
+            <td class="gap-lose">✗</td>
+            <td class="gap-win">✓</td>
+          </tr>
+          <tr>
+            <td>Pricing Clarity</td>
+            <td class="gap-lose">✗</td>
+            <td class="gap-win">✓</td>
+            <td class="gap-neutral">~</td>
+            <td class="gap-neutral">~</td>
+            <td class="gap-question">?</td>
+          </tr>
+          <tr>
+            <td>Membership</td>
+            <td class="gap-neutral">~</td>
+            <td class="gap-win">✓</td>
+            <td class="gap-lose">✗</td>
+            <td class="gap-lose">✗</td>
+            <td class="gap-question">?</td>
+          </tr>
+          <tr class="you-row">
+            <td>Service Breadth</td>
+            <td class="gap-neutral">~</td>
+            <td class="gap-neutral">~</td>
+            <td class="gap-neutral">~</td>
+            <td class="gap-lose">✗</td>
+            <td class="gap-win">✓</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="gap-legend">
+      <div class="gap-legend-item"><span class="gap-win">✓</span> Strong signal</div>
+      <div class="gap-legend-item"><span class="gap-neutral">~</span> Mixed</div>
+      <div class="gap-legend-item"><span class="gap-lose">✗</span> Weakness or absent</div>
+      <div class="gap-legend-item"><span class="gap-question">?</span> Not mentioned in reviews</div>
+    </div>
+  </section>
+
+</div><!-- end report-body -->
+
+<!-- ═══ AI VISIBILITY — FULL WIDTH DARK SECTION ═══ -->
+<div class="report-body">
+<section id="ai-visibility" style="border-bottom:none;">
+  <div class="section-eyebrow">
+    <span class="section-num" style="color:rgba(14,165,233,0.7);">05</span>
+    <div class="section-rule" style="background:rgba(255,255,255,0.08);"></div>
+    <span class="section-tag" style="color:rgba(255,255,255,0.3);">AI Visibility</span>
   </div>
-</div>
+  <h2 class="section-title" style="color:white;">Google AI isn't reading your star rating. It's reading what patients say.</h2>
+  <p class="section-lead" style="color:rgba(255,255,255,0.55);">AI Overviews and tools like ChatGPT now synthesize review content to recommend local practices. The practices with the most specific, outcome-focused reviews are being surfaced. Practices with thin review profiles are being trained out.</p>
 
-<!-- 03 COMPETITOR PROFILES -->
-<div class="section" id="profiles">
-  <div class="section-eyebrow">03 — Competitor Profiles</div>
-  <div class="section-title">Who They Are &amp; Where They're Weak</div>
-  <div class="section-rule"></div>
-
-  <div class="comp-card">
-    <div class="comp-card-header">
+  <div class="ai-result-panel">
+    <div class="ai-query-bar">
+      <span class="ai-query-icon">⌕</span>
+      "best med spa in Nashville for lip filler"
+    </div>
+    <div class="ai-result-row">
+      <div class="ai-rank rank-shown">1</div>
       <div>
-        <div class="comp-card-name">ElaMar Nashville</div>
-        <div class="comp-card-meta">Charlotte Ave · ~1.5 miles away</div>
-      </div>
-      <div class="comp-card-rating">
-        <div class="comp-card-rating-num">5.0</div>
-        <div class="comp-card-count">632 reviews</div>
+        <div class="ai-result-name">ElaMar Nashville</div>
+        <div class="ai-result-why">Recommended based on 632 reviews citing <em>"best injector in Nashville"</em>, <em>"natural results"</em>, and <em>"worth every penny"</em> — 47 reviews specifically mention lip filler outcomes.</div>
       </div>
     </div>
-    <div class="comp-card-body">
-      <div class="tag-row">
-        <span class="tag s">Experience Theater</span>
-        <span class="tag s">Named Injectors</span>
-        <span class="tag s">New Client Ritual</span>
-        <span class="tag n">Face Only</span>
-      </div>
-      <p class="comp-desc">The market leader by volume. Built on a deliberate onboarding ritual — champagne, 5 free Botox units for new clients, personalized gift bags. Reviews consistently mention the vibe before the outcomes. A brand built on feeling, not clinical results.</p>
-      <div class="weakness-box">
-        <div class="weakness-label">Key Vulnerability</div>
-        <div class="weakness-text">Their brand rests on ambiance over artistry. Patients who prioritize clinical outcomes over atmosphere have no strong reason to choose ElaMar. Zero mention of advanced body treatments or laser services.</div>
-      </div>
-      <div class="quote-block">
-        <div class="quote-text">"Beautiful soft girl interiors... Hydrafacial is my go to for maintenance."</div>
-        <div class="quote-attr">Google Review · ElaMar Nashville</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="comp-card">
-    <div class="comp-card-header">
+    <div class="ai-result-row">
+      <div class="ai-rank rank-dim">2</div>
       <div>
-        <div class="comp-card-name">NakedMD Med Spa</div>
-        <div class="comp-card-meta">Murphy Ave · ~2.3 miles away</div>
-      </div>
-      <div class="comp-card-rating">
-        <div class="comp-card-rating-num">4.8</div>
-        <div class="comp-card-count">539 reviews</div>
+        <div class="ai-result-name">NakedMD Med Spa</div>
+        <div class="ai-result-why">539 reviews. Mentioned for <em>"affordable pricing"</em> and <em>"walk-in availability"</em>. Limited outcome-specific mentions.</div>
       </div>
     </div>
-    <div class="comp-card-body">
-      <div class="tag-row">
-        <span class="tag s">Membership Program</span>
-        <span class="tag s">New Client Pricing</span>
-        <span class="tag s">Walk-Ins Welcome</span>
-        <span class="tag w">Wait Times</span>
-        <span class="tag w">Rotating Injectors</span>
-      </div>
-      <p class="comp-desc">Competes on accessibility and price-entry. The $199 new client special and transparent website pricing drive high volume. Their 4.8 rating — the only sub-5.0 in this set — reflects real operational friction.</p>
-      <div class="weakness-box">
-        <div class="weakness-label">Key Vulnerability</div>
-        <div class="weakness-text">Volume over precision. Rotating injectors create inconsistent experiences. The only specific operational complaint in this dataset: a reviewer waited 35 minutes in a treatment room before anyone arrived.</div>
-      </div>
-      <div class="quote-block">
-        <div class="quote-text">"Almost 35 minutes of that time I was just sitting in the room waiting for someone to come."</div>
-        <div class="quote-attr">Google Review · NakedMD Nashville</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="comp-card">
-    <div class="comp-card-header">
+    <div class="ai-result-row">
+      <div class="ai-rank rank-dim">3</div>
       <div>
-        <div class="comp-card-name">Complexion Nashville</div>
-        <div class="comp-card-meta">Murphy Rd · ~1.8 miles away</div>
-      </div>
-      <div class="comp-card-rating">
-        <div class="comp-card-rating-num">4.9</div>
-        <div class="comp-card-count">234 reviews</div>
+        <div class="ai-result-name">Smiley Aesthetics</div>
+        <div class="ai-result-why">170 reviews. Praised for <em>"natural results"</em> and <em>"never felt sold to."</em></div>
       </div>
     </div>
-    <div class="comp-card-body">
-      <div class="tag-row">
-        <span class="tag s">Skincare Expertise</span>
-        <span class="tag s">Punctuality</span>
-        <span class="tag s">Own Product Line</span>
-        <span class="tag n">No Injectables</span>
-      </div>
-      <p class="comp-desc">Not a direct competitor for injectables or laser services. Their niche is facial skincare and product retail. Strongest asset is punctuality — reviewers specifically call out "always on time." Best positioned as a referral partner.</p>
-      <div class="weakness-box" style="background: var(--teal-light); border-color: #b0d4d4;">
-        <div class="weakness-label" style="color: var(--teal);">Competitive Position</div>
-        <div class="weakness-text" style="color: #1a4040;">Low direct threat. No injectable services. Consider a referral partnership — Complexion clients who want Botox have nowhere to go within that practice.</div>
-      </div>
-    </div>
+    <div class="ai-not-shown">Client A: 72 reviews · Not surfaced in AI results</div>
   </div>
 
-  <div class="comp-card">
-    <div class="comp-card-header">
-      <div>
-        <div class="comp-card-name">Smiley Aesthetics</div>
-        <div class="comp-card-meta">White Bridge Pike · ~1.2 miles away</div>
-      </div>
-      <div class="comp-card-rating">
-        <div class="comp-card-rating-num">5.0</div>
-        <div class="comp-card-count">170 reviews</div>
-      </div>
+  <div class="ai-insight-cards">
+    <div class="ai-insight-card">
+      <div class="ai-insight-card-label">Why this matters now</div>
+      <p><strong>26% of patients now choose providers based on AI tools</strong> — nearly matching physician referrals at 28%. This is not a future problem. It is a current one. ElaMar is being trained into recommendations. Client A is not.</p>
     </div>
-    <div class="comp-card-body">
-      <div class="tag-row">
-        <span class="tag s">Natural Results</span>
-        <span class="tag s">No-Upsell Trust</span>
-        <span class="tag w">Single-Injector Risk</span>
-        <span class="tag n">Limited Services</span>
-      </div>
-      <p class="comp-desc">Client A's most comparable competitor — similar age, similar rating, similar injector-led profile. Their differentiator is the trust narrative: "never felt sold to." Injector Donna carries a disproportionate share of their review identity — a fragility.</p>
-      <div class="weakness-box">
-        <div class="weakness-label">Key Vulnerability</div>
-        <div class="weakness-text">Single-injector dependency. No service breadth beyond core injectables. Client A's range (laser, Dysport, body treatments) and multi-provider team is a structural advantage.</div>
-      </div>
+    <div class="ai-insight-card">
+      <div class="ai-insight-card-label">What AI is actually reading</div>
+      <p>AI Overviews don't aggregate star ratings — they synthesize <strong>specific patient language</strong>. "Best injector in Nashville." "Most natural lip filler I've had." Outcome phrases. Client A has these phrases. They exist in 72 reviews that almost no AI tool is finding.</p>
+    </div>
+    <div class="ai-insight-card">
+      <div class="ai-insight-card-label">The compounding problem</div>
+      <p>Every month ElaMar adds 15–18 reviews — many with outcome-specific language. Every month that language trains AI recommendations more deeply. <strong>The gap is not static. It is widening.</strong></p>
+    </div>
+    <div class="ai-insight-card">
+      <div class="ai-insight-card-label">The fix</div>
+      <p>Volume alone isn't enough. Reviews need to contain <strong>outcome-specific language</strong> — what the patient noticed, what changed, what they'd tell a friend. A review request that prompts for outcomes changes what AI learns about your practice.</p>
     </div>
   </div>
+</section>
 </div>
 
-<!-- 04 GAP ANALYSIS -->
-<div class="section" id="gaps">
-  <div class="section-eyebrow">04 — Gap Analysis</div>
-  <div class="section-title">Where You Win. Where You're Losing Ground.</div>
-  <div class="section-rule"></div>
+<div class="report-body">
 
-  <div class="gap-table-wrap">
-    <table class="gap-table">
-      <thead>
-        <tr>
-          <th>Category</th>
-          <th>ElaMar</th>
-          <th>Naked</th>
-          <th>Comp.</th>
-          <th>Smiley</th>
-          <th class="you-col">Client A</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Review Volume</td>
-          <td><span class="dot s">✓</span></td>
-          <td><span class="dot s">✓</span></td>
-          <td><span class="dot m">~</span></td>
-          <td><span class="dot m">~</span></td>
-          <td class="you-col"><span class="dot w">✗</span></td>
-        </tr>
-        <tr>
-          <td>Review Velocity</td>
-          <td><span class="dot s">✓</span></td>
-          <td><span class="dot s">✓</span></td>
-          <td><span class="dot m">~</span></td>
-          <td><span class="dot m">~</span></td>
-          <td class="you-col"><span class="dot w">✗</span></td>
-        </tr>
-        <tr>
-          <td>Results Quality</td>
-          <td><span class="dot m">~</span></td>
-          <td><span class="dot m">~</span></td>
-          <td><span class="dot m">~</span></td>
-          <td><span class="dot m">~</span></td>
-          <td class="you-col"><span class="dot s">✓</span></td>
-        </tr>
-        <tr>
-          <td>Named Injector</td>
-          <td><span class="dot s">✓</span></td>
-          <td><span class="dot w">✗</span></td>
-          <td><span class="dot s">✓</span></td>
-          <td><span class="dot s">✓</span></td>
-          <td class="you-col"><span class="dot s">✓</span></td>
-        </tr>
-        <tr>
-          <td>New Client Ritual</td>
-          <td><span class="dot s">✓</span></td>
-          <td><span class="dot m">~</span></td>
-          <td><span class="dot m">~</span></td>
-          <td><span class="dot m">~</span></td>
-          <td class="you-col"><span class="dot w">✗</span></td>
-        </tr>
-        <tr>
-          <td>Laser / Body Tx</td>
-          <td><span class="dot w">✗</span></td>
-          <td><span class="dot w">✗</span></td>
-          <td><span class="dot w">✗</span></td>
-          <td><span class="dot w">✗</span></td>
-          <td class="you-col"><span class="dot s">✓</span></td>
-        </tr>
-        <tr>
-          <td>Pricing Clarity</td>
-          <td><span class="dot w">✗</span></td>
-          <td><span class="dot s">✓</span></td>
-          <td><span class="dot m">~</span></td>
-          <td><span class="dot m">~</span></td>
-          <td class="you-col"><span class="dot n">?</span></td>
-        </tr>
-        <tr>
-          <td>Membership</td>
-          <td><span class="dot m">~</span></td>
-          <td><span class="dot s">✓</span></td>
-          <td><span class="dot w">✗</span></td>
-          <td><span class="dot w">✗</span></td>
-          <td class="you-col"><span class="dot n">?</span></td>
-        </tr>
-        <tr>
-          <td>Service Breadth</td>
-          <td><span class="dot m">~</span></td>
-          <td><span class="dot m">~</span></td>
-          <td><span class="dot m">~</span></td>
-          <td><span class="dot w">✗</span></td>
-          <td class="you-col"><span class="dot s">✓</span></td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="scroll-hint">← Scroll to see full matrix</div>
-  </div>
+  <!-- 06 THE EXPLOIT -->
+  <section class="report-section" id="exploit">
+    <div class="section-eyebrow">
+      <span class="section-num">06</span>
+      <div class="section-rule"></div>
+      <span class="section-tag">The Exploit</span>
+    </div>
+    <h2 class="section-title">Three specific opportunities</h2>
+    <p class="section-lead">Each is grounded in a specific gap in competitor review data and a specific asset Client A already possesses.</p>
 
-  <div class="mt-md" style="display: flex; gap: 12px; flex-wrap: wrap; font-size: 11px; color: var(--ink-muted); align-items: center;">
-    <span><span class="dot s" style="width:16px;height:16px;font-size:8px;">✓</span> Strong signal</span>
-    <span><span class="dot m" style="width:16px;height:16px;font-size:8px;">~</span> Mixed</span>
-    <span><span class="dot w" style="width:16px;height:16px;font-size:8px;">✗</span> Weakness</span>
-    <span><span class="dot n" style="width:16px;height:16px;font-size:8px;">?</span> Not mentioned</span>
-  </div>
-</div>
+    <div class="exploit-card">
+      <div class="exploit-header">
+        <div class="exploit-num-badge">1</div>
+        <div>
+          <div class="exploit-type">Exploit 01 · Positioning</div>
+          <h3>Own "Clinical Artistry" as a Category</h3>
+        </div>
+      </div>
+      <div class="exploit-body">
+        <p>Every competitor competes on warmth and ambiance. ElaMar leads on experience theater. NakedMD leads on price. Nobody owns clinical precision and artistic outcomes — and Client A's review language is already there: "freaking ARTIST," "most beautiful lip filler I've ever had," "results are unmatched." Push patients to talk about what they see in the mirror, not how the champagne tasted.</p>
+        <div class="action-box">
+          <div class="action-label">Action</div>
+          <p>Revise your review request to ask: <em>"If you loved your results, would you share what you noticed in the first 2 weeks?"</em></p>
+        </div>
+      </div>
+    </div>
 
-<!-- 05 THE EXPLOIT -->
-<div class="section" id="exploit">
-  <div class="section-eyebrow">05 — The Exploit</div>
-  <div class="section-title">Three Specific Opportunities</div>
-  <div class="section-rule"></div>
-  <p style="margin-bottom: 20px;">Each is grounded in a specific gap in competitor review data and a specific asset Client A already possesses.</p>
+    <div class="exploit-card">
+      <div class="exploit-header">
+        <div class="exploit-num-badge">2</div>
+        <div>
+          <div class="exploit-type">Exploit 02 · Service Category</div>
+          <h3>Activate Laser Body Treatments as a Standalone Category</h3>
+        </div>
+      </div>
+      <div class="exploit-body">
+        <p>Client A is the only practice in this competitive set with laser body treatment mentioned in reviews. Not one competitor surfaces this service. There is a patient segment who wants laser body treatments, believes med spas don't offer them, and has nowhere obvious to go. A targeted 4-week Instagram series would face zero local competitive noise.</p>
+        <div class="action-box">
+          <div class="action-label">Action</div>
+          <p>4 posts over 4 weeks featuring real patient outcomes. Boost each post $50–100. Target Nashville women 28–45 within 10 miles. Goal: 3+ consult requests in 30 days.</p>
+        </div>
+      </div>
+    </div>
 
-  <div class="exploit-card">
-    <div class="exploit-bg-num">1</div>
-    <div class="exploit-label">Exploit 01 · Positioning</div>
-    <div class="exploit-title">Own "Clinical Artistry" as a Category</div>
-    <div class="exploit-body">Every competitor competes on warmth and ambiance. ElaMar leads on experience theater. NakedMD leads on price. Nobody owns clinical precision and artistic outcomes — and Client A's review language is already there: "freaking ARTIST," "most beautiful lip filler I've ever had," "results are unmatched." Push patients to talk about what they see in the mirror, not how the champagne tasted.</div>
-    <div class="exploit-action">
-      <div class="exploit-action-label">Action</div>
-      <div class="exploit-action-text">Revise your review request to ask: <em>"If you loved your results, would you share what you noticed in the first 2 weeks?"</em></div>
+    <div class="exploit-card">
+      <div class="exploit-header">
+        <div class="exploit-num-badge">3</div>
+        <div>
+          <div class="exploit-type">Exploit 03 · Review Engine</div>
+          <h3>Build a Post-Appointment Review Ritual</h3>
+        </div>
+      </div>
+      <div class="exploit-body">
+        <p>A text from Lead Injector personally — 48 hours post-appointment, checking in on results and including a direct Google review link — would likely generate 3–4x your current monthly review volume. Patients who describe their injector as an "artist" will leave a review for that person. You're not asking for a favor — you're giving them a platform to brag about their results. This also directly improves AI visibility by generating outcome-specific language at volume.</p>
+        <div class="action-box">
+          <div class="action-label">Action</div>
+          <p>Set up a 48-hour SMS automation via Vagaro or Podium attributed to Lead Injector personally. Script: <em>"Hey [name], checking in on your results — I hope you're loving them. Would you mind sharing on Google? [link]"</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 PRIORITY ACTION PLAN -->
+  <section class="report-section" id="actions">
+    <div class="section-eyebrow">
+      <span class="section-num">07</span>
+      <div class="section-rule"></div>
+      <span class="section-tag">Priority Action Plan</span>
+    </div>
+    <h2 class="section-title">What to do first</h2>
+    <p class="section-lead">Sequenced by impact and effort. The first two actions this week drive everything else.</p>
+
+    <div class="priority-timeline">
+      <div class="priority-item">
+        <div class="priority-dot now">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="priority-content">
+          <div class="priority-when">This Week</div>
+          <h4>Set up 48-hour post-appointment review SMS</h4>
+          <p>The highest-leverage action in this report. Use Vagaro, Mindbody, or Podium to automate a personal text from Lead Injector 48 hours after every appointment with a direct Google review link. Frame the prompt around outcomes, not the visit.</p>
+        </div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-dot now">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="priority-content">
+          <div class="priority-when">This Week</div>
+          <h4>Update review request language for AI</h4>
+          <p>Change the review prompt to ask specifically about outcomes — what the patient noticed, what changed visually, what they'd tell a friend who asked. This is the single fastest way to improve AI discoverability without waiting for volume to build.</p>
+        </div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-dot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/></svg>
+        </div>
+        <div class="priority-content">
+          <div class="priority-when later">30 Days</div>
+          <h4>Launch 4-post laser body treatment series</h4>
+          <p>Recruit 2–3 existing patients with great results. Photograph before/afters. Boost each post $50–100 targeting Nashville women 28–45 within 10 miles. Goal: 3+ consult inquiries in 30 days.</p>
+        </div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-dot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/></svg>
+        </div>
+        <div class="priority-content">
+          <div class="priority-when later">60 Days</div>
+          <h4>Design a new client welcome ritual</h4>
+          <p>ElaMar's ritual works because it's specific and memorable. A handwritten card from Lead Injector, a branded skincare sample, a complimentary add-on for first visits — something patients mention unprompted in their review and that AI surfaces as a differentiator.</p>
+        </div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-dot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/></svg>
+        </div>
+        <div class="priority-content">
+          <div class="priority-when later">90 Days</div>
+          <h4>Evaluate a loyalty or membership structure</h4>
+          <p>NakedMD's membership program drives their review volume and repeat visits. At 90 days, assess whether Client A's patient retention warrants a formal membership offer — and whether the AI visibility improvements are reflected in new patient inquiries.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REPORT FOOTER -->
+  <div id="report-footer">
+    <div class="report-footer-headline">The quality gap is real.<br/>Now close the <em>visibility gap.</em></div>
+    <p class="report-footer-sub">The practices that win local reputation dominance act within the first 30 days — not the first quarter.</p>
+    <a href="https://outerintel.com" class="report-footer-cta">Get your free competitive audit →</a>
+    <div class="report-footer-meta">
+      Outer Intel · Outside-in intelligence for local practices<br/>
+      What patients say when you're not in the room.<br/><br/>
+      Confidential · Prepared for Client A · March 2026<br/>
+      Data sourced from Google Places API and public review platforms · Client details anonymized · Sample report
     </div>
   </div>
 
-  <div class="exploit-card">
-    <div class="exploit-bg-num">2</div>
-    <div class="exploit-label">Exploit 02 · Service Category</div>
-    <div class="exploit-title">Activate Laser Body Treatments as a Standalone Category</div>
-    <div class="exploit-body">Client A is the only practice in this competitive set with laser body treatment mentioned in reviews. Not one competitor surfaces this service. There is a patient segment who wants laser body treatments, believes med spas don't offer them, and has nowhere obvious to go. A targeted 4-week Instagram series would face zero local competitive noise.</div>
-    <div class="exploit-action">
-      <div class="exploit-action-label">Action</div>
-      <div class="exploit-action-text">4 posts over 4 weeks featuring real patient outcomes. Boost each post $50–100. Target Nashville women 28–45 within 10 miles. Goal: 3+ consult requests in 30 days.</div>
-    </div>
-  </div>
-
-  <div class="exploit-card">
-    <div class="exploit-bg-num">3</div>
-    <div class="exploit-label">Exploit 03 · Review Engine</div>
-    <div class="exploit-title">Build a Post-Appointment Review Ritual</div>
-    <div class="exploit-body">A text from [Lead Injector] personally — 48 hours post-appointment, checking in on results and including a direct Google review link — would likely generate 3–4x your current monthly review volume. Patients who describe their injector as an "artist" will leave a review for that person. You're not asking for a favor — you're giving them a platform to brag about their results.</div>
-    <div class="exploit-action">
-      <div class="exploit-action-label">Action</div>
-      <div class="exploit-action-text">Set up a 48-hour SMS automation via Vagaro or Podium attributed to [Lead Injector] personally. Script: <em>"Hey [name], checking in on your results — I hope you're loving them. Would you mind sharing on Google? [link]"</em></div>
-    </div>
-  </div>
-</div>
-
-<!-- 06 RESPONSE AUDIT + ACTIONS -->
-<div class="section" id="actions">
-  <div class="section-eyebrow">06 — Response Audit &amp; Action Plan</div>
-  <div class="section-title">How Each Practice Responds — And What to Do First</div>
-  <div class="section-rule"></div>
-
-  <div class="grade-grid">
-    <div class="grade-item">
-      <div class="grade-name">ElaMar</div>
-      <div class="grade-letter b">B+</div>
-      <div class="grade-note">Personal, good speed</div>
-    </div>
-    <div class="grade-item">
-      <div class="grade-name">NakedMD</div>
-      <div class="grade-letter c">C</div>
-      <div class="grade-note">Generic replies</div>
-    </div>
-    <div class="grade-item">
-      <div class="grade-name">Complex.</div>
-      <div class="grade-letter a">A−</div>
-      <div class="grade-note">Best in class</div>
-    </div>
-    <div class="grade-item">
-      <div class="grade-name">Smiley</div>
-      <div class="grade-letter b">B</div>
-      <div class="grade-note">Consistent, brief</div>
-    </div>
-    <div class="grade-item you">
-      <div class="grade-name">Client A</div>
-      <div class="grade-letter c">C+</div>
-      <div class="grade-note">Inconsistent</div>
-    </div>
-  </div>
-
-  <p style="margin-bottom: 20px; font-size: 13px;">With 72 reviews, every response is visible. Respond to all existing reviews within 24 hours — at your current volume this takes under 5 minutes per week.</p>
-
-  <div class="findings-group-title" style="font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">Priority Action Plan</div>
-
-  <div class="action-item">
-    <div class="action-badge badge-now">This Week</div>
-    <div>
-      <div class="action-title">Set up 48-hour post-appointment review SMS</div>
-      <div class="action-desc">The highest-leverage action in this report. Use Vagaro, Mindbody, or Podium to automate a personal text from [Lead Injector] 48 hours after every appointment with a direct Google review link.</div>
-    </div>
-  </div>
-
-  <div class="action-item">
-    <div class="action-badge badge-now">This Week</div>
-    <div>
-      <div class="action-title">Respond to all 72 existing reviews</div>
-      <div class="action-desc">Go back and respond to every unanswered review. Personalize each — mention the service, the provider, a specific detail. Takes 2–3 hours once and signals attentiveness to Google and to prospective patients.</div>
-    </div>
-  </div>
-
-  <div class="action-item">
-    <div class="action-badge badge-soon">30 Days</div>
-    <div>
-      <div class="action-title">Launch 4-post laser body treatment series</div>
-      <div class="action-desc">Recruit 2–3 existing patients with great results. Photograph before/afters. Boost each post $50–100. Goal: 3+ consult inquiries in 30 days.</div>
-    </div>
-  </div>
-
-  <div class="action-item">
-    <div class="action-badge badge-soon">60 Days</div>
-    <div>
-      <div class="action-title">Design a new client welcome ritual</div>
-      <div class="action-desc">ElaMar's ritual works because it's specific and memorable. A handwritten card from [Lead Injector], a branded skincare sample, a complimentary add-on for first visits. Something patients mention unprompted in their review.</div>
-    </div>
-  </div>
-
-  <div class="action-item">
-    <div class="action-badge badge-later">90 Days</div>
-    <div>
-      <div class="action-title">Evaluate a loyalty or membership structure</div>
-      <div class="action-desc">NakedMD's membership program drives their review volume and repeat visits. At 90 days, assess whether Client A's patient retention warrants a formal membership offer.</div>
-    </div>
-  </div>
-</div>
-
-<!-- BACK COVER -->
-<div class="back-cover">
-  <div class="back-label">Reputation Intelligence · Nashville, TN</div>
-  <div class="back-title">The quality gap is real. Now close the <em>visibility gap.</em></div>
-  <div class="back-sub">This audit is a starting point. The practices that win local reputation dominance act on these findings within the first 30 days — not the first quarter.</div>
-  <div class="back-rule"></div>
-  <div class="back-cta">Quarterly Audit — $550 · Ongoing Monitoring</div>
-  <div class="back-fine">
-    Confidential · Prepared for Client A · March 2026<br>
-    Data sourced from Google Places API and public review platforms.<br>
-    This is a sample report. Client details anonymized.
-  </div>
-</div>
+</div><!-- end report-body -->
 
 <script>
-  // Highlight active nav link on scroll
-  const sections = document.querySelectorAll('.section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        navLinks.forEach(link => link.classList.remove('active'));
-        const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
-        if (active) {
-          active.classList.add('active');
-          active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        }
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
       }
     });
-  }, { threshold: 0.3 });
+  }, { rootMargin: '-20% 0px -70% 0px' });
 
   sections.forEach(s => observer.observe(s));
 </script>
